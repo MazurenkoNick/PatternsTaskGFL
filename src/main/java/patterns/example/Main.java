@@ -32,6 +32,7 @@ public class Main {
                 .addTitle("Harry Potter")
                 .addCountry("Britain")
                 .addDirector("Chris Columbus")
+                .addMinimumAge(18)
                 .addDescription("Harry Potter is a film series based on the eponymous novels by J. K. Rowling.")
                 .build();
 

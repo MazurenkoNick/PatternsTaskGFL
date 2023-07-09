@@ -8,8 +8,6 @@ public class RegularMovie extends Movie {
 
     public static class RegularMovieBuilder extends MovieBuilder<RegularMovieBuilder> {
 
-        // can add additional fields in the `RegularMovie`class if we need it in the future
-
         @Override
         public RegularMovie build() {
             return new RegularMovie(this);
