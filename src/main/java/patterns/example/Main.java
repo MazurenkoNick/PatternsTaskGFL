@@ -1,11 +1,14 @@
 package patterns.example;
 
+import patterns.example.model.Customer;
+import patterns.example.model.Rental;
 import patterns.example.model.movie.ChildrenMovie;
 import patterns.example.model.movie.Movie;
 import patterns.example.model.movie.NewMovie;
 import patterns.example.model.movie.RegularMovie;
+import patterns.example.service.HtmlCustomerStatementConverter;
 
-import java.util.List;
+import java.util.Set;
 
 public class Main {
 
@@ -32,12 +35,12 @@ public class Main {
                 .addDescription("Harry Potter is a film series based on the eponymous novels by J. K. Rowling.")
                 .build();
 
-        List<Rental> rentals = List.of(new Rental(m1, 1),
+        Set<Rental> rentals = Set.of(new Rental(m1, 1),
                 new Rental(m2, 4),
                 new Rental(m3, 5));
 
         Customer customer = new Customer("John Doe", rentals);
-        String statement = customer.statement();
+        String statement = HtmlCustomerStatementConverter.INSTANCE.getStatement(customer);
 
         System.out.println(statement);
     }
