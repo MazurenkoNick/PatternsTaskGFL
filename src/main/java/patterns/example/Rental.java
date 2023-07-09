@@ -1,5 +1,7 @@
 package patterns.example;
 
+import patterns.example.model.movie.Movie;
+
 class Rental {
     private final Movie movie;
     private final int daysRented;

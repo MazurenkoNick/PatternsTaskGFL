@@ -1,16 +1,40 @@
 package patterns.example;
 
+import patterns.example.model.movie.ChildrenMovie;
+import patterns.example.model.movie.Movie;
+import patterns.example.model.movie.NewMovie;
+import patterns.example.model.movie.RegularMovie;
+
 import java.util.List;
-
-import static patterns.example.Movie.MovieType.*;
-
 
 public class Main {
 
     public static void main(String[] args) {
-        List<Rental> rentals = List.of(new Rental(new Movie("Rambo", REGULAR), 1),
-                new Rental(new Movie("Lord of the Rings", NEW_RELEASE), 4),
-                new Rental(new Movie("Harry Potter", CHILDRENS), 5));
+        Movie m1 = RegularMovie.builder()
+                .addTitle("Rambo")
+                .addCountry("USA")
+                .addDirector("Sylvester Stallone")
+                .addDescription("Rambo is an American media franchise centered on a " +
+                        "series of action films featuring John J. Rambo.")
+                .build();
+
+        Movie m2 = NewMovie.builder()
+                .addTitle("Lord of the Rings")
+                .addCountry("New Zealand")
+                .addDirector("Peter Jackson")
+                .addDescription("Based on the novel The Lord of the Rings by J. R. R. Tolkien")
+                .build();
+
+        Movie m3 = ChildrenMovie.builder()
+                .addTitle("Harry Potter")
+                .addCountry("Britain")
+                .addDirector("Chris Columbus")
+                .addDescription("Harry Potter is a film series based on the eponymous novels by J. K. Rowling.")
+                .build();
+
+        List<Rental> rentals = List.of(new Rental(m1, 1),
+                new Rental(m2, 4),
+                new Rental(m3, 5));
 
         Customer customer = new Customer("John Doe", rentals);
         String statement = customer.statement();
