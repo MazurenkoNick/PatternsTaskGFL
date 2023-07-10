@@ -15,8 +15,7 @@ public class CustomerService {
     }
 
     public AmountAndRenterPoints countAmountsAndRenterPoints(Customer customer) {
-        AmountAndRenterPoints amountAndRenterPoints = new AmountAndRenterPoints(customer);
-        amountAndRenterPoints.setCustomer(customer);
+        AmountAndRenterPoints amountAndRenterPoints = new AmountAndRenterPoints(customer.getName());
         double totalAmount = 0;
         double frequentRenterPoints = 0;
 

@@ -5,31 +5,31 @@ import java.util.Map;
 
 public class AmountAndRenterPoints {
 
-    Customer customer;
+    String customerName;
     Map<String, Double> amountsAndRenterPoints;
 
     private AmountAndRenterPoints() {}
 
-    public AmountAndRenterPoints(Customer customer, Map<String, Double> amountsAndRenterPoints) {
-        this.customer = customer;
+    public AmountAndRenterPoints(String customerName, Map<String, Double> amountsAndRenterPoints) {
+        this.customerName = customerName;
         this.amountsAndRenterPoints = amountsAndRenterPoints;
     }
 
-    public AmountAndRenterPoints(Customer customer) {
-        this.customer = customer;
+    public AmountAndRenterPoints(String customerName) {
+        this.customerName = customerName;
         this.amountsAndRenterPoints = new LinkedHashMap<>();
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public String getCustomerName() {
+        return customerName;
     }
 
     public Map<String, Double> getAmountsAndRenterPoints() {
         return amountsAndRenterPoints;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public void setAmountsAndRenterPoints(Map<String, Double> amountsAndRenterPoints) {
