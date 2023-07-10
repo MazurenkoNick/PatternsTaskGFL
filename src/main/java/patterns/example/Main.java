@@ -7,7 +7,9 @@ import patterns.example.model.movie.Movie;
 import patterns.example.model.movie.NewMovie;
 import patterns.example.model.movie.RegularMovie;
 import patterns.example.service.converter.HtmlCustomerStatementConverter;
+import patterns.example.service.file.RentalJsonOperator;
 
+import java.util.List;
 import java.util.Set;
 
 public class Main {
@@ -34,6 +36,7 @@ public class Main {
                 .addDirector("Chris Columbus")
                 .addMinimumAge(18)
                 .addDescription("Harry Potter is a film series based on the eponymous novels by J. K. Rowling.")
+                .addActors(List.of("Daniel Radcliffe", "Rupert Grint", "Emma Watson"))
                 .build();
 
         Set<Rental> rentals = Set.of(new Rental(m1, 1),
@@ -44,5 +47,14 @@ public class Main {
         String statement = HtmlCustomerStatementConverter.INSTANCE.getStatement(customer);
 
         System.out.println(statement);
+
+        ///
+        RentalJsonOperator.INSTANCE.addMovie(m1);
+        RentalJsonOperator.INSTANCE.addMovie(m2);
+        RentalJsonOperator.INSTANCE.addMovie(m3);
+
+        List<Movie> movies = RentalJsonOperator.INSTANCE.readMoviesToList();
+        System.out.println(movies);
+        RentalJsonOperator.INSTANCE.addAllMovies(movies);
     }
 }

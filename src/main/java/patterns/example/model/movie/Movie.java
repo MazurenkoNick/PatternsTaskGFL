@@ -1,14 +1,28 @@
 package patterns.example.model.movie;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ChildrenMovie.class, name = "children"),
+        @JsonSubTypes.Type(value = RegularMovie.class, name = "regular"),
+        @JsonSubTypes.Type(value = NewMovie.class, name = "new")
+})
 public abstract class Movie {
 
-    private final String title;
-    private final String country;
-    private final String description;
-    private final String director; // todo: create an actor & director POJOs
-    private final List<String> actors;
+    private String title;
+    private String country;
+    private String description;
+    private String director; // todo: create an actor & director POJOs
+    private List<String> actors;
+
+    Movie() {}
 
     Movie(MovieBuilder<?> builder) {
         this.title = builder.title;
@@ -77,5 +91,36 @@ public abstract class Movie {
 
     public List<String> getActors() {
         return actors;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public void setActors(List<String> actors) {
+        this.actors = actors;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", country='" + country + '\'' +
+                ", description='" + description + '\'' +
+                ", director='" + director + '\'' +
+                ", actors=" + actors +
+                '}';
     }
 }

@@ -2,6 +2,8 @@ package patterns.example.model.movie;
 
 public class NewMovie extends Movie {
 
+    private NewMovie() {}
+
     private NewMovie(NewMovieBuilder builder) {
         super(builder);
     }

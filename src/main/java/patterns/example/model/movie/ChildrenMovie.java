@@ -2,7 +2,9 @@ package patterns.example.model.movie;
 
 public class ChildrenMovie extends Movie {
 
-    private final int minimumAge;
+    private int minimumAge;
+
+    private ChildrenMovie() {}
 
     private ChildrenMovie(ChildrenMovieBuilder builder) {
         super(builder);
@@ -43,5 +45,21 @@ public class ChildrenMovie extends Movie {
 
     public int getMinimumAge() {
         return minimumAge;
+    }
+
+    public void setMinimumAge(int minimumAge) {
+        this.minimumAge = minimumAge;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + getTitle() + '\'' +
+                ", country='" + getCountry() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", director='" + getDirector() + '\'' +
+                ", actors=" + getActors() +
+                ", minimumAge=" + getMinimumAge() +
+                '}';
     }
 }

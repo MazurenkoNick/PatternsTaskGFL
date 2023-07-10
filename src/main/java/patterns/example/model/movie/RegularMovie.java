@@ -2,6 +2,8 @@ package patterns.example.model.movie;
 
 public class RegularMovie extends Movie {
 
+    private RegularMovie() {}
+
     private RegularMovie(RegularMovieBuilder builder) {
         super(builder);
     }
