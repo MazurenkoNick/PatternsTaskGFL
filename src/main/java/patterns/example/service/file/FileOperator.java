@@ -51,4 +51,12 @@ public class FileOperator {
 
         return sb.toString();
     }
+
+    public void removeContent(String filePath) {
+        try {
+            new FileWriter(filePath, false).close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

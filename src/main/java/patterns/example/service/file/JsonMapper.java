@@ -26,7 +26,7 @@ public class JsonMapper implements Mapper {
     }
 
     @Override
-    public <T> String format(T obj) {
+    public <T> String getStringFromInstance(T obj) {
         try {
             return objectMapper.writer().writeValueAsString(obj);
         } catch (JsonProcessingException e) {

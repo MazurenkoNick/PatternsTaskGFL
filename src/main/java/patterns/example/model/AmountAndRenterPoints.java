@@ -39,4 +39,12 @@ public class AmountAndRenterPoints {
     public void add(String key, Double val) {
         amountsAndRenterPoints.put(key, val);
     }
+
+    @Override
+    public String toString() {
+        return "AmountAndRenterPoints{" +
+                "customerName='" + customerName + '\'' +
+                ", amountsAndRenterPoints=" + amountsAndRenterPoints +
+                '}';
+    }
 }

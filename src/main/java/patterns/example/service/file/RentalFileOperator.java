@@ -1,6 +1,9 @@
 package patterns.example.service.file;
 
+import patterns.example.model.AmountAndRenterPoints;
+import patterns.example.model.Customer;
 import patterns.example.model.movie.Movie;
+import patterns.example.service.customer.CustomerService;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,15 +14,21 @@ import java.util.Scanner;
 public abstract class RentalFileOperator {
 
     private final FileOperator fileOperator;
+    private final CustomerService customerService;
 
     RentalFileOperator() {
         this.fileOperator = FileOperator.INSTANCE;
+        this.customerService = CustomerService.INSTANCE;
     }
 
     public abstract String getMovieFilePath();
 
+    protected abstract String getFilePackagePrefix();
+
+    protected abstract String getFilePackagePostfix();
+
     // factory method
-    public abstract Mapper getMapper();
+    protected abstract Mapper getMapper();
 
     public void addAllMovies(List<Movie> movies) {
         createMovieFile();
@@ -59,8 +68,34 @@ public abstract class RentalFileOperator {
         return movies;
     }
 
+    public void addUserAmountAndRenterPoints(Customer customer) {
+        String customerInfoFilePath = getFilePackagePrefix() + customer.getName() + getFilePackagePostfix();
+        // remove content if possible
+        fileOperator.createFileIfNotExist(customerInfoFilePath);
+        fileOperator.removeContent(customerInfoFilePath);
+
+        AmountAndRenterPoints userInfo = customerService.countAmountsAndRenterPoints(customer);
+        String formattedUserInfo = getMapper().getStringFromInstance(userInfo);
+        fileOperator.appendText(customerInfoFilePath, formattedUserInfo);
+    }
+
+    public String readAmountAndRenterPointsToString(String username) {
+        String filePath = getFilePackagePrefix() + username + getFilePackagePostfix();
+        File file = new File(filePath);
+
+        if (file.exists() && !file.isDirectory()) {
+            return fileOperator.readFile(filePath);
+        }
+        return null;
+    }
+
+    public AmountAndRenterPoints readAmountAndRenterPointsToInstance(String username) {
+        String result = readAmountAndRenterPointsToString(username);
+        return getMapper().getInstanceFromString(result, AmountAndRenterPoints.class);
+    }
+
     private void add(Movie movie) {
-        String formattedMovie = getMapper().format(movie);
+        String formattedMovie = getMapper().getStringFromInstance(movie);
         fileOperator.appendText(getMovieFilePath(), formattedMovie);
     }
 
