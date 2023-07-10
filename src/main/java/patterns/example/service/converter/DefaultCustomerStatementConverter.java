@@ -1,5 +1,6 @@
 package patterns.example.service.converter;
 
+import patterns.example.model.AmountAndRenterPoints;
 import patterns.example.model.Customer;
 import patterns.example.service.customer.CustomerService;
 
@@ -15,11 +16,11 @@ public class DefaultCustomerStatementConverter implements CustomerStatementConve
     }
 
     public String getStatement(Customer customer) {
-        Map<String, Double> amountsAndRenterPoints = customerService.countAmountsAndRenterPoints(customer);
+        AmountAndRenterPoints amountsAndRenterPoints = customerService.countAmountsAndRenterPoints(customer);
         StringBuilder sb = new StringBuilder();
 
         sb.append("Rental Record for ").append(customer.getName());
-        for (Map.Entry<String, Double> entry : amountsAndRenterPoints.entrySet()) {
+        for (Map.Entry<String, Double> entry : amountsAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
             sb.append("\n\t")
                     .append(entry.getKey())
                     .append(": ")

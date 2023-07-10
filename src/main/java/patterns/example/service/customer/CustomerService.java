@@ -1,11 +1,9 @@
 package patterns.example.service.customer;
 
+import patterns.example.model.AmountAndRenterPoints;
 import patterns.example.model.Customer;
 import patterns.example.model.Rental;
 import patterns.example.model.movie.NewMovie;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class CustomerService {
 
@@ -16,24 +14,25 @@ public class CustomerService {
     private CustomerService() {
     }
 
-    public Map<String, Double> countAmountsAndRenterPoints(Customer customer) {
-        Map<String, Double> customerAmountsAndRenterPoints = new LinkedHashMap<>();
+    public AmountAndRenterPoints countAmountsAndRenterPoints(Customer customer) {
+        AmountAndRenterPoints amountAndRenterPoints = new AmountAndRenterPoints(customer);
+        amountAndRenterPoints.setCustomer(customer);
         double totalAmount = 0;
         double frequentRenterPoints = 0;
 
         for (Rental rental : customer.getRentals()) {
             //determine amounts for each movie using `Strategy` pattern
             double currentAmount = countAmount(rental);
-            customerAmountsAndRenterPoints.put(rental.getMovie().getTitle(), currentAmount);
+            amountAndRenterPoints.add(rental.getMovie().getTitle(), currentAmount);
             totalAmount += currentAmount;
 
             // add frequent renter points
             frequentRenterPoints += countFrequentRenterPoints(rental);
         }
 
-        customerAmountsAndRenterPoints.put(TOTAL_AMOUNT, totalAmount);
-        customerAmountsAndRenterPoints.put(FREQUENT_RENTER_POINTS, frequentRenterPoints);
-        return customerAmountsAndRenterPoints;
+        amountAndRenterPoints.add(TOTAL_AMOUNT, totalAmount);
+        amountAndRenterPoints.add(FREQUENT_RENTER_POINTS, frequentRenterPoints);
+        return amountAndRenterPoints;
     }
 
     private double countAmount(Rental rental) {
