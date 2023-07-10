@@ -146,6 +146,8 @@ public class Movie {
                 ", description='" + description + '\'' +
                 ", director='" + director + '\'' +
                 ", actors=" + actors +
+                ", minimumAge=" + minimumAge +
+                ", movieType=" + movieType +
                 '}';
     }
 }

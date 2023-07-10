@@ -52,9 +52,12 @@ public class FileOperator {
         return sb.toString();
     }
 
-    public void removeContent(String filePath) {
+    public void removeContentIfExist(String filePath) {
         try {
-            new FileWriter(filePath, false).close();
+            File file = new File(filePath);
+            if (file.exists() && !file.isDirectory()) {
+                new FileWriter(filePath, false).close();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,15 +1,14 @@
 package patterns.example.service.file;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import patterns.example.model.AmountAndRenterPoints;
 import patterns.example.model.Customer;
 import patterns.example.model.movie.Movie;
 import patterns.example.service.customer.CustomerService;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 
 public abstract class RentalFileOperator {
 
@@ -31,15 +30,18 @@ public abstract class RentalFileOperator {
     protected abstract Mapper getMapper();
 
     public void addAllMovies(List<Movie> movies) {
-        createMovieFile();
-        for (Movie movie: movies) {
-            add(movie);
+        boolean empty = createMovieFile();
+        List<Movie> allMovies = new LinkedList<>(movies);
+        if (!empty) {
+            allMovies.addAll(readMoviesToList());
         }
+
+        fileOperator.removeContentIfExist(getMovieFilePath());
+        fileOperator.appendText(getMovieFilePath(), getMapper().getStringFromInstance(allMovies));
     }
 
     public void addMovie(Movie movie) {
-        createMovieFile();
-        add(movie);
+        addAllMovies(List.of(movie));
     }
 
     public String readMoviesToString() {
@@ -48,27 +50,15 @@ public abstract class RentalFileOperator {
     }
 
     public List<Movie> readMoviesToList() {
-        File file = new File(getMovieFilePath());
-        List<Movie> movies = new ArrayList<>();
-
-        try (Scanner dataReader = new Scanner(file)) {
-            while (dataReader.hasNextLine()) {
-                String line = dataReader.nextLine();
-                movies.add(getMapper().getInstanceFromString(line, Movie.class));
-            }
-        }
-        catch (FileNotFoundException exception) {
-            System.out.println("Exception Occurred");
-        }
-
-        return movies;
+        String result = readMoviesToString();
+        return getMapper().getInstanceFromString(result, new TypeReference<List<Movie>>() {});
     }
 
     public void updateUserAmountAndRenterPoints(Customer customer) {
         String customerInfoFilePath = getFilePackagePrefix() + customer.getName() + getFilePackagePostfix();
         // remove content if possible
         fileOperator.createFileIfNotExist(customerInfoFilePath);
-        fileOperator.removeContent(customerInfoFilePath);
+        fileOperator.removeContentIfExist(customerInfoFilePath);
 
         AmountAndRenterPoints userInfo = customerService.countAmountsAndRenterPoints(customer);
         String formattedUserInfo = getMapper().getStringFromInstance(userInfo);
@@ -90,13 +80,8 @@ public abstract class RentalFileOperator {
         return getMapper().getInstanceFromString(result, AmountAndRenterPoints.class);
     }
 
-    private void add(Movie movie) {
-        String formattedMovie = getMapper().getStringFromInstance(movie);
-        fileOperator.appendText(getMovieFilePath(), formattedMovie);
-    }
-
-    private void createMovieFile() {
+    private boolean createMovieFile() {
         String movieFilePath = getMovieFilePath();
-        fileOperator.createFileIfNotExist(movieFilePath);
+        return fileOperator.createFileIfNotExist(movieFilePath);
     }
 }

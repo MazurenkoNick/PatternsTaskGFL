@@ -1,6 +1,7 @@
 package patterns.example.service.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -26,9 +27,18 @@ public class JsonMapper implements Mapper {
     }
 
     @Override
+    public <T> T getInstanceFromString(String json, TypeReference<T> type) {
+        try {
+            return objectMapper.readValue(json, type);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public <T> String getStringFromInstance(T obj) {
         try {
-            return objectMapper.writer().writeValueAsString(obj);
+            return objectMapper.writer().withDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
