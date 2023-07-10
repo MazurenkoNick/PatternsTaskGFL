@@ -2,10 +2,10 @@ package patterns.example;
 
 import patterns.example.model.Customer;
 import patterns.example.model.Rental;
-import patterns.example.model.movie.ChildrenMovie;
+import patterns.example.model.movie.ChildrenType;
 import patterns.example.model.movie.Movie;
-import patterns.example.model.movie.NewMovie;
-import patterns.example.model.movie.RegularMovie;
+import patterns.example.model.movie.NewReleaseType;
+import patterns.example.model.movie.RegularType;
 import patterns.example.service.converter.HtmlCustomerStatementConverter;
 import patterns.example.service.file.RentalJsonOperator;
 
@@ -15,7 +15,8 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
-        Movie m1 = RegularMovie.builder()
+        Movie m1 = Movie.builder()
+                .addMovieType(RegularType.INSTANCE)
                 .addTitle("Rambo")
                 .addCountry("USA")
                 .addDirector("Sylvester Stallone")
@@ -23,14 +24,16 @@ public class Main {
                         "series of action films featuring John J. Rambo.")
                 .build();
 
-        Movie m2 = NewMovie.builder()
+        Movie m2 = Movie.builder()
+                .addMovieType(NewReleaseType.INSTANCE)
                 .addTitle("Lord of the Rings")
                 .addCountry("New Zealand")
                 .addDirector("Peter Jackson")
                 .addDescription("Based on the novel The Lord of the Rings by J. R. R. Tolkien")
                 .build();
 
-        Movie m3 = ChildrenMovie.builder()
+        Movie m3 = Movie.builder()
+                .addMovieType(ChildrenType.INSTANCE)
                 .addTitle("Harry Potter")
                 .addCountry("Britain")
                 .addDirector("Chris Columbus")
@@ -53,7 +56,7 @@ public class Main {
         RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer); // check that info will be rewritten
         System.out.println(RentalJsonOperator.INSTANCE.readAmountAndRenterPointsToInstance(customer.getName()));
 
-        RentalJsonOperator.INSTANCE.addMovie(m1); // todo: convert movies.json into proper json list
+        RentalJsonOperator.INSTANCE.addMovie(m1); // todo: convert movies.json into a proper json list
         RentalJsonOperator.INSTANCE.addMovie(m2); // check that movie list will not be rewritten
         RentalJsonOperator.INSTANCE.addMovie(m3);
 

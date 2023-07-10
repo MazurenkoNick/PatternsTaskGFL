@@ -3,7 +3,7 @@ package patterns.example.service.customer;
 import patterns.example.model.AmountAndRenterPoints;
 import patterns.example.model.Customer;
 import patterns.example.model.Rental;
-import patterns.example.model.movie.NewMovie;
+import patterns.example.model.movie.NewReleaseType;
 
 public class CustomerService {
 
@@ -42,7 +42,7 @@ public class CustomerService {
     private int countFrequentRenterPoints(Rental rental) {
         int frequentRenterPoints = 1;
         // add bonus for a two-day new release rental
-        if ((rental.getMovie() instanceof NewMovie) && rental.getDaysRented() > 1) {
+        if ((rental.getMovie().getMovieType() instanceof NewReleaseType) && rental.getDaysRented() > 1) {
             frequentRenterPoints++;
         }
         return frequentRenterPoints;

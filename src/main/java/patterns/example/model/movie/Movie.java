@@ -1,77 +1,86 @@
 package patterns.example.model.movie;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import java.util.List;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = ChildrenMovie.class, name = "Children"),
-        @JsonSubTypes.Type(value = RegularMovie.class, name = "Regular"),
-        @JsonSubTypes.Type(value = NewMovie.class, name = "New")
-})
-public abstract class Movie {
+public class Movie {
 
     private String title;
     private String country;
     private String description;
     private String director; // todo: create an actor & director POJOs
     private List<String> actors;
+    private int minimumAge;
+    private MovieType movieType;
 
-    Movie() {}
+    private Movie() {}
 
-    Movie(MovieBuilder<?> builder) {
+    private Movie(MovieBuilder builder) {
         this.title = builder.title;
         this.country = builder.country;
         this.description = builder.description;
         this.director = builder.director;
         this.actors = builder.actors;
+        this.movieType = builder.movieType;
+        this.minimumAge = builder.minimumAge;
     }
 
-    // Using a parallel hierarchy of builders, each nested in the corresponding implementation
-    abstract static class MovieBuilder<T extends MovieBuilder<T>> {
+    public static class MovieBuilder {
         private String title;
         private String country;
         private String description;
         private String director; // todo: create an actor & director POJOs
         private List<String> actors;
+        private int minimumAge;
+        private MovieType movieType;
 
-        public T addTitle(String title) {
+
+        public MovieBuilder addTitle(String title) {
             this.title = title;
-            return self();
+            return this;
         }
 
-        public T addCountry(String country) {
+        public MovieBuilder addCountry(String country) {
             this.country = country;
-            return self();
+            return this;
         }
 
-        public T addDescription(String description) {
+        public MovieBuilder addDescription(String description) {
             this.description = description;
-            return self();
+            return this;
         }
 
-        public T addDirector(String director) {
+        public MovieBuilder addDirector(String director) {
             this.director = director;
-            return self();
+            return this;
         }
 
-        public T addActors(List<String> actors) {
+        public MovieBuilder addActors(List<String> actors) {
             this.actors = actors;
-            return self();
+            return this;
         }
 
-        public abstract Movie build();
+        public MovieBuilder addMovieType(MovieType movieType) {
+            this.movieType = movieType;
+            return this;
+        }
 
-        // Subclasses must override this method to return "this"
-        protected abstract T self();
+        public MovieBuilder addMinimumAge(int minimumAge) {
+            this.minimumAge = minimumAge;
+            return this;
+        }
+
+        public Movie build() {
+            return new Movie(this);
+        }
     }
 
-    public abstract double determineAmount(int daysRented);
+    public static MovieBuilder builder() {
+        return new MovieBuilder();
+    }
+
+    public double determineAmount(int daysRented) {
+        return movieType.determineAmount(daysRented);
+    }
 
     public String getTitle() {
         return title;
@@ -91,6 +100,22 @@ public abstract class Movie {
 
     public List<String> getActors() {
         return actors;
+    }
+
+    public int getMinimumAge() {
+        return minimumAge;
+    }
+
+    public MovieType getMovieType() {
+        return movieType;
+    }
+
+    public void setMinimumAge(int minimumAge) {
+        this.minimumAge = minimumAge;
+    }
+
+    public void setMovieType(MovieType movieType) {
+        this.movieType = movieType;
     }
 
     public void setTitle(String title) {

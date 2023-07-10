@@ -52,10 +52,6 @@ public abstract class RentalFileOperator {
         List<Movie> movies = new ArrayList<>();
 
         try (Scanner dataReader = new Scanner(file)) {
-            /*
-            TODO: create iterator in each `RentalFileOperator`
-                implementation to properly read movies from file. Not line by line
-            */
             while (dataReader.hasNextLine()) {
                 String line = dataReader.nextLine();
                 movies.add(getMapper().getInstanceFromString(line, Movie.class));
