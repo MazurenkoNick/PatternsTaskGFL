@@ -10,9 +10,9 @@ import java.util.List;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ChildrenMovie.class, name = "children"),
-        @JsonSubTypes.Type(value = RegularMovie.class, name = "regular"),
-        @JsonSubTypes.Type(value = NewMovie.class, name = "new")
+        @JsonSubTypes.Type(value = ChildrenMovie.class, name = "Children"),
+        @JsonSubTypes.Type(value = RegularMovie.class, name = "Regular"),
+        @JsonSubTypes.Type(value = NewMovie.class, name = "New")
 })
 public abstract class Movie {
 

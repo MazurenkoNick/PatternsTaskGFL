@@ -16,6 +16,11 @@ public abstract class RentalFileOperator {
         this.fileOperator = FileOperator.INSTANCE;
     }
 
+    public abstract String getMovieFilePath();
+
+    // factory method
+    public abstract Mapper getMapper();
+
     public void addAllMovies(List<Movie> movies) {
         createMovieFile();
         for (Movie movie: movies) {
@@ -63,9 +68,4 @@ public abstract class RentalFileOperator {
         String movieFilePath = getMovieFilePath();
         fileOperator.createFileIfNotExist(movieFilePath);
     }
-
-    public abstract String getMovieFilePath();
-
-    // factory method
-    public abstract Mapper getMapper();
 }

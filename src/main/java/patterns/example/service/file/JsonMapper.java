@@ -3,7 +3,6 @@ package patterns.example.service.file;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import patterns.example.model.movie.Movie;
 
 import java.io.IOException;
 
@@ -27,9 +26,9 @@ public class JsonMapper implements Mapper {
     }
 
     @Override
-    public String format(Movie movie) {
+    public <T> String format(T obj) {
         try {
-            return objectMapper.writer().writeValueAsString(movie);
+            return objectMapper.writer().writeValueAsString(obj);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

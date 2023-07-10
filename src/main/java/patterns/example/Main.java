@@ -48,7 +48,7 @@ public class Main {
 
         System.out.println(statement);
 
-        ///
+        /// files manipulations
         RentalJsonOperator.INSTANCE.addMovie(m1);
         RentalJsonOperator.INSTANCE.addMovie(m2);
         RentalJsonOperator.INSTANCE.addMovie(m3);
