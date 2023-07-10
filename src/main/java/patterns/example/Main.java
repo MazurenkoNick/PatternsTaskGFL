@@ -49,16 +49,18 @@ public class Main {
         System.out.println(statement);
 
         /// files manipulations
-        RentalJsonOperator.INSTANCE.addUserAmountAndRenterPoints(customer);
-        RentalJsonOperator.INSTANCE.addUserAmountAndRenterPoints(customer); // check that info will be rewritten
+        RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer);
+        RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer); // check that info will be rewritten
         System.out.println(RentalJsonOperator.INSTANCE.readAmountAndRenterPointsToInstance(customer.getName()));
 
-        RentalJsonOperator.INSTANCE.addMovie(m1);
+        RentalJsonOperator.INSTANCE.addMovie(m1); // todo: convert movies.json into proper json list
         RentalJsonOperator.INSTANCE.addMovie(m2); // check that movie list will not be rewritten
         RentalJsonOperator.INSTANCE.addMovie(m3);
 
         List<Movie> movies = RentalJsonOperator.INSTANCE.readMoviesToList();
         movies.forEach(System.out::println);
         RentalJsonOperator.INSTANCE.addAllMovies(movies);
+
+        // todo: make menu in the console
     }
 }

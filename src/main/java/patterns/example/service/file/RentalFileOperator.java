@@ -68,7 +68,7 @@ public abstract class RentalFileOperator {
         return movies;
     }
 
-    public void addUserAmountAndRenterPoints(Customer customer) {
+    public void updateUserAmountAndRenterPoints(Customer customer) {
         String customerInfoFilePath = getFilePackagePrefix() + customer.getName() + getFilePackagePostfix();
         // remove content if possible
         fileOperator.createFileIfNotExist(customerInfoFilePath);
