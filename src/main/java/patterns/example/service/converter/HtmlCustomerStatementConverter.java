@@ -1,6 +1,7 @@
-package patterns.example.service;
+package patterns.example.service.converter;
 
 import patterns.example.model.Customer;
+import patterns.example.service.customer.CustomerService;
 
 import java.util.Map;
 

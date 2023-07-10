@@ -6,7 +6,7 @@ import patterns.example.model.movie.ChildrenMovie;
 import patterns.example.model.movie.Movie;
 import patterns.example.model.movie.NewMovie;
 import patterns.example.model.movie.RegularMovie;
-import patterns.example.service.HtmlCustomerStatementConverter;
+import patterns.example.service.converter.HtmlCustomerStatementConverter;
 
 import java.util.Set;
 

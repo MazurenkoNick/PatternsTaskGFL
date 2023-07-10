@@ -1,4 +1,4 @@
-package patterns.example.service;
+package patterns.example.service.converter;
 
 import patterns.example.model.Customer;
 

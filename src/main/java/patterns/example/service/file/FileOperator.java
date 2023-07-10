@@ -1,4 +1,4 @@
-package patterns.example.service;
+package patterns.example.service.file;
 
 import java.io.*;
 import java.util.Scanner;

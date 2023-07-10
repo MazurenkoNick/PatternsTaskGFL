@@ -1,4 +1,4 @@
-package patterns.example.service;
+package patterns.example.service.customer;
 
 import patterns.example.model.Customer;
 import patterns.example.model.Rental;
