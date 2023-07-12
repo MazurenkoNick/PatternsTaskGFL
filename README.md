@@ -16,4 +16,4 @@
 Створити зручне меню для доступу до функцій
 
 UNFINISHED (in the process):
-- функції перегляду всії оренд і маніпуляцій з ними
+- try to save movies without duplicates

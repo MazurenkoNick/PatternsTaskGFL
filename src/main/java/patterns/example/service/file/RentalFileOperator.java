@@ -1,34 +1,24 @@
 package patterns.example.service.file;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import patterns.example.model.AmountAndRenterPoints;
 import patterns.example.model.Customer;
 import patterns.example.model.movie.Movie;
-import patterns.example.service.customer.CustomerService;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class RentalFileOperator {
 
     private final FileOperator fileOperator;
-    private final CustomerService customerService;
 
     RentalFileOperator() {
         this.fileOperator = FileOperator.INSTANCE;
-        this.customerService = CustomerService.INSTANCE;
     }
 
     public abstract String getMovieFilePath();
-
-    protected abstract String getFilePackagePrefix();
-
-    protected abstract String getFilePackagePostfix();
-
-    // factory method
-    protected abstract Mapper getMapper();
+    public abstract String getCustomerRentalsFilePath();
+    protected abstract Mapper getMapper(); // factory method
 
     public void addAllMovies(List<Movie> movies) {
         boolean empty = createMovieFile();
@@ -46,31 +36,48 @@ public abstract class RentalFileOperator {
     }
 
     public String readMoviesToString() {
-        String movieFilePath = getMovieFilePath();
-        return fileOperator.readFile(movieFilePath);
+        return readFileToString(getMovieFilePath());
     }
 
     public List<Movie> readMoviesToList() {
-        createMovieFile();
-        String result = readMoviesToString();
-        List<Movie> list = getMapper().getInstanceFromString(result, new TypeReference<List<Movie>>() {});
+        String text = readMoviesToString();
         // return empty list, if there is no list in the file
-        return Objects.requireNonNullElseGet(list, LinkedList::new);
+        return readListFromString(text, new TypeReference<List<Movie>>() {});
     }
 
-    public void updateUserAmountAndRenterPoints(Customer customer) {
-        String customerInfoFilePath = getFilePackagePrefix() + customer.getName() + getFilePackagePostfix();
-        // remove content if possible
-        fileOperator.createFileIfNotExist(customerInfoFilePath);
-        fileOperator.removeContentIfExist(customerInfoFilePath);
+    public void addAllCustomers(List<Customer> customers) {
+        boolean empty = createCustomerRentalsFile();
+        List<Customer> allCustomers = new LinkedList<>(customers);
 
-        AmountAndRenterPoints userInfo = customerService.countAmountsAndRenterPoints(customer);
-        String formattedUserInfo = getMapper().getStringFromInstance(userInfo);
-        fileOperator.appendText(customerInfoFilePath, formattedUserInfo);
+        if (!empty) {
+            allCustomers.addAll(readCustomerRentalsToList());
+            fileOperator.removeContentIfExist(getCustomerRentalsFilePath());
+        }
+        fileOperator.appendText(getCustomerRentalsFilePath(), getMapper().getStringFromInstance(allCustomers));
     }
 
-    public String readAmountAndRenterPointsToString(String username) {
-        String filePath = getFilePackagePrefix() + username + getFilePackagePostfix();
+    public void addCustomer(Customer customer) {
+        addAllCustomers(List.of(customer));
+    }
+
+    public String readCustomersToString() {
+        return readFileToString(getCustomerRentalsFilePath());
+    }
+
+    public List<Customer> readCustomerRentalsToList() {
+        String text = readCustomersToString();
+        // return empty list, if there is no list in the file
+        return readListFromString(text, new TypeReference<List<Customer>>() {});
+    }
+
+    private <T> List<T> readListFromString(String text, TypeReference<List<T>> listTypeReference) {
+        if (text == null) {
+            return new LinkedList<>();
+        }
+        return getMapper().getInstanceFromString(text, listTypeReference);
+    }
+
+    private String readFileToString(String filePath) {
         File file = new File(filePath);
 
         if (file.exists() && !file.isDirectory()) {
@@ -79,9 +86,9 @@ public abstract class RentalFileOperator {
         return null;
     }
 
-    public AmountAndRenterPoints readAmountAndRenterPointsToInstance(String username) {
-        String result = readAmountAndRenterPointsToString(username);
-        return getMapper().getInstanceFromString(result, AmountAndRenterPoints.class);
+    private boolean createCustomerRentalsFile() {
+        String rentalFilePath = getCustomerRentalsFilePath();
+        return fileOperator.createFileIfNotExist(rentalFilePath);
     }
 
     private boolean createMovieFile() {

@@ -1,10 +1,18 @@
 package patterns.example;
 
+import patterns.example.model.Customer;
+import patterns.example.model.Rental;
 import patterns.example.model.movie.*;
+import patterns.example.service.converter.CustomerStatementConverter;
+import patterns.example.service.converter.DefaultCustomerStatementConverter;
+import patterns.example.service.converter.HtmlCustomerStatementConverter;
+import patterns.example.service.customer.CustomerService;
 import patterns.example.service.file.RentalFileOperator;
 import patterns.example.service.file.RentalJsonOperator;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.function.Predicate;
 
@@ -16,6 +24,9 @@ public class Menu {
     private static final String QUIT = "/q";
     private static final String ADD_MOVIE = "/addMovie";
     private static final String FIND_MOVIE = "/findMovie";
+    private static final String ADD_CUSTOMER_RENTALS = "/addCustomerRentals";
+    private static final String FIND_CUSTOMER_RENTALS = "/findCustomerRentals";
+    private static final String COUNT_RENTER_POINTS = "/countRenterPoints";
     private static final String NEW_TYPE = "new";
     private static final String CHILDREN_TYPE = "children";
     private static final String REGULAR_TYPE = "regular";
@@ -23,14 +34,22 @@ public class Menu {
     private static final String FIND_BY_COUNTRY = "/findByCountry";
     private static final String FIND_BY_DIRECTOR = "/findByDirector";
     private static final String FIND_BY_ACTOR = "/findByActor";
+    private static final String DEFAULT_FORMAT = "/default";
+    private static final String HTML_FORMAT = "/html";
+    private static final Scanner sc = new Scanner(System.in);
     private final RentalFileOperator rentalFileOperator;
+    private final CustomerService customerService;
+    private final DefaultCustomerStatementConverter defaultStatementConverter;
+    private final HtmlCustomerStatementConverter htmlStatementConverter;
 
     public Menu() {
         this.rentalFileOperator = RentalJsonOperator.INSTANCE;
+        this.customerService = CustomerService.INSTANCE;
+        this.defaultStatementConverter = DefaultCustomerStatementConverter.INSTANCE;
+        this.htmlStatementConverter = HtmlCustomerStatementConverter.INSTANCE;
     }
 
     public void menu() {
-        Scanner sc = new Scanner(System.in);
         String action = "";
 
         printInstruction();
@@ -42,8 +61,17 @@ public class Menu {
             else if (action.equalsIgnoreCase(ADD_MOVIE)) {
                 addMovie();
             }
-            else if (action.equalsIgnoreCase("/findMovie")) {
+            else if (action.equalsIgnoreCase(FIND_MOVIE)) {
                 findMovie();
+            }
+            else if (action.equalsIgnoreCase(ADD_CUSTOMER_RENTALS)) {
+                addCustomerAndRentals();
+            }
+            else if (action.equalsIgnoreCase(FIND_CUSTOMER_RENTALS)) {
+                findCustomerAndRentals();
+            }
+            else if (action.equalsIgnoreCase(COUNT_RENTER_POINTS)) {
+                countRenterPoints();
             }
             printInstruction();
         }
@@ -56,11 +84,94 @@ public class Menu {
         System.out.println("To get a list of movies print: " + MOVIE_LIST);
         System.out.println("To add a new movie print: " + ADD_MOVIE);
         System.out.println("To find the movie by name print: " + FIND_MOVIE);
+        System.out.println("To add a new customer and his rentals print: " + ADD_CUSTOMER_RENTALS);
+        System.out.println("To find customer and his rentals print: " + FIND_CUSTOMER_RENTALS);
+        System.out.println("Count user's amount and renter points: " + COUNT_RENTER_POINTS);
         System.out.println();
     }
 
+    private void findCustomerAndRentals() {
+        System.out.println("Print name of the customer: ");
+        List<Customer> customers = rentalFileOperator.readCustomerRentalsToList();
+        String name = sc.nextLine();
+
+        customers.stream()
+                .filter(Objects::nonNull)
+                .filter(c -> name.equals(c.getName()))
+                .forEach(System.out::println);
+    }
+
+    private void countRenterPoints() {
+        System.out.println("Print name of the customer: ");
+        List<Customer> customers = rentalFileOperator.readCustomerRentalsToList();
+        String name = sc.nextLine();
+
+        System.out.printf(
+                "Renter points has just been counted. Print format (%s or %s)\n",
+                DEFAULT_FORMAT,
+                HTML_FORMAT
+        );
+
+        String format = sc.nextLine();
+        CustomerStatementConverter statementConverter = retrieveStatementConverterType(format);
+
+        if (statementConverter == null) {
+            System.out.println("Wrong format type");
+        }
+        else {
+            customers.stream()
+                    .filter(Objects::nonNull)
+                    .filter(c -> name.equals(c.getName()))
+                    .map(statementConverter::getStatement)
+                    .forEach(System.out::println);
+        }
+    }
+
+    private void addCustomerAndRentals() {
+        Customer customer = new Customer();
+        List<Movie> availableMovies = rentalFileOperator.readMoviesToList();
+
+        if (availableMovies == null || availableMovies.isEmpty()) {
+            System.out.println("There are no movies");
+        }
+        else {
+            System.out.println("Print customer name:");
+            customer.setName(sc.nextLine());
+            String action = "";
+
+            while (!action.equalsIgnoreCase(QUIT)) {
+                Rental rental = new Rental();
+                System.out.println("Add all available movies and rental days for this customer");
+                System.out.println("Print movie title:");
+
+                String title = sc.nextLine();
+                System.out.println("Print rental days");
+                int rentalDays = Integer.parseInt(sc.nextLine());
+
+                Optional<Movie> m = availableMovies.stream()
+                        .filter(Objects::nonNull)
+                        .filter(mov -> mov.getTitle().equals(title))
+                        .findFirst();
+
+                if (m.isPresent()) {
+                    rental.setMovie(m.get());
+                    rental.setDaysRented(rentalDays);
+                    customer.addRental(rental);
+                }
+                else {
+                    System.out.println("There is no movie with this title");
+                }
+                System.out.println("If you want to finish adding customer rentals, print: " + QUIT);
+                System.out.println("If you want to proceed, print anything else");
+                action = sc.nextLine();
+            }
+        }
+
+        rentalFileOperator.addCustomer(customer);
+        System.out.println(customer.getName() + " added!");
+    }
+
     private void findMovie() {
-        Scanner sc = new Scanner(System.in);
         List<Movie> movies = rentalFileOperator.readMoviesToList();
 
         System.out.printf("print: %s or %s or %s or %s\n",
@@ -91,6 +202,7 @@ public class Menu {
         }
 
         movies.stream()
+                .filter(Objects::nonNull)
                 .filter(predicate)
                 .forEach(System.out::println);
     }
@@ -111,7 +223,6 @@ public class Menu {
     }
 
     private Movie buildMovie() {
-        Scanner sc = new Scanner(System.in);
         System.out.println("Print movie title: ");
         String title = sc.nextLine();
         System.out.printf("Print movie type (%s, %s or %s): \n", NEW_TYPE, REGULAR_TYPE, CHILDREN_TYPE);
@@ -124,6 +235,9 @@ public class Menu {
         String director = sc.nextLine();
         System.out.println("Print minimum age allowed to watch the movie:");
         String minimumAge = sc.nextLine();
+        if (minimumAge.equals("")) {
+            minimumAge = "0";
+        }
         System.out.println("Print actors using comma separator, e.g. `Michael Jackson, Kim, Ivan Ivanenko`:");
         List<String> actors = List.of(sc.nextLine().split(","));
 
@@ -140,15 +254,26 @@ public class Menu {
 
     private MovieType retrieveMovieType(String s) {
         MovieType type = null;
-        if (s.equalsIgnoreCase(CHILDREN_TYPE)) {
+        if (CHILDREN_TYPE.equalsIgnoreCase(s)) {
             type = ChildrenType.INSTANCE;
         }
-        else if (s.equalsIgnoreCase(NEW_TYPE)) {
+        else if (NEW_TYPE.equalsIgnoreCase(s)) {
             type = NewReleaseType.INSTANCE;
         }
-        else if (s.equalsIgnoreCase(REGULAR_TYPE)) {
+        else if (REGULAR_TYPE.equalsIgnoreCase(s)) {
             type = RegularType.INSTANCE;
         }
         return type;
+    }
+
+    private CustomerStatementConverter retrieveStatementConverterType(String format) {
+        CustomerStatementConverter converter = null;
+        if (DEFAULT_FORMAT.equals(format)) {
+            converter = defaultStatementConverter;
+        }
+        else if (HTML_FORMAT.equals(format)) {
+            converter = htmlStatementConverter;
+        }
+        return converter;
     }
 }

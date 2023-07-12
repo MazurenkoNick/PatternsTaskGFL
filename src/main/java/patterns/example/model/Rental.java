@@ -5,11 +5,21 @@ import patterns.example.model.movie.Movie;
 import java.util.Objects;
 
 public class Rental {
-    private final Movie movie;
-    private final int daysRented;
+    private Movie movie;
+    private int daysRented;
+
+    public Rental() {}
 
     public Rental(Movie movie, int daysRented) {
         this.movie = movie;
+        this.daysRented = daysRented;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    public void setDaysRented(int daysRented) {
         this.daysRented = daysRented;
     }
 
@@ -19,6 +29,14 @@ public class Rental {
 
     public Movie getMovie() {
         return movie;
+    }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "movie=" + movie +
+                ", daysRented=" + daysRented +
+                '}';
     }
 
     @Override

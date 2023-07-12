@@ -1,0 +1,43 @@
+[ {
+  "name" : "John Doe",
+  "rentals" : [ {
+    "movie" : {
+      "title" : "Lord of the Rings",
+      "country" : "",
+      "description" : "",
+      "director" : "",
+      "actors" : [ "" ],
+      "minimumAge" : 0,
+      "movieType" : {
+        "type" : "New"
+      }
+    },
+    "daysRented" : 4
+  }, {
+    "movie" : {
+      "title" : "Harry Potter",
+      "country" : "",
+      "description" : "",
+      "director" : "",
+      "actors" : [ "" ],
+      "minimumAge" : 0,
+      "movieType" : {
+        "type" : "Children"
+      }
+    },
+    "daysRented" : 5
+  }, {
+    "movie" : {
+      "title" : "Rambo",
+      "country" : "",
+      "description" : "",
+      "director" : "",
+      "actors" : [ "" ],
+      "minimumAge" : 0,
+      "movieType" : {
+        "type" : "Regular"
+      }
+    },
+    "daysRented": 1
+  } ]
+} ]

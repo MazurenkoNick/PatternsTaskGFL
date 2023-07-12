@@ -59,7 +59,14 @@ public class Main {
 //
 //        RentalJsonOperator.INSTANCE.addAllMovies(List.of(m1, m2, m3));
 //        RentalJsonOperator.INSTANCE.addMovie(m1);
-//        RentalJsonOperator.INSTANCE.addMovie(m2); // check that movie list will not be rewritten
+//        // check that movie list will not be rewritten in the file
+//        RentalJsonOperator.INSTANCE.addMovie(m2);
 //        RentalJsonOperator.INSTANCE.addMovie(m3);
+//        RentalJsonOperator.INSTANCE.readMoviesToList().forEach(System.out::println);
+//
+//        RentalJsonOperator.INSTANCE.addCustomer(customer);
+//        // check that customer list will not be rewritten in the file
+//        RentalJsonOperator.INSTANCE.addCustomer(customer);
+//        RentalJsonOperator.INSTANCE.readCustomerRentalsToList().forEach(System.out::println);
     }
 }

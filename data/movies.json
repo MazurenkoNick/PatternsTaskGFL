@@ -1,10 +1,30 @@
 [ {
-  "title" : "Title",
-  "country" : "Country",
-  "description" : "Description",
-  "director" : "Director",
-  "actors" : [ "Kim" ],
-  "minimumAge" : 16,
+  "title" : "Rambo",
+  "country" : "",
+  "description" : "",
+  "director" : "",
+  "actors" : [ "" ],
+  "minimumAge" : 0,
+  "movieType" : {
+    "type" : "Regular"
+  }
+}, {
+  "title" : "Harry Potter",
+  "country" : "",
+  "description" : "",
+  "director" : "",
+  "actors" : [ "" ],
+  "minimumAge" : 0,
+  "movieType" : {
+    "type" : "Children"
+  }
+}, {
+  "title" : "Lord of the Rings",
+  "country" : "",
+  "description" : "",
+  "director" : "",
+  "actors" : [ "" ],
+  "minimumAge" : 0,
   "movieType" : {
     "type" : "New"
   }
