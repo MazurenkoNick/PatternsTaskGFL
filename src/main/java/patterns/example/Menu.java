@@ -6,7 +6,6 @@ import patterns.example.model.movie.*;
 import patterns.example.service.converter.CustomerStatementConverter;
 import patterns.example.service.converter.DefaultCustomerStatementConverter;
 import patterns.example.service.converter.HtmlCustomerStatementConverter;
-import patterns.example.service.customer.CustomerService;
 import patterns.example.service.file.RentalFileOperator;
 import patterns.example.service.file.RentalJsonOperator;
 
@@ -38,13 +37,11 @@ public class Menu {
     private static final String HTML_FORMAT = "/html";
     private static final Scanner sc = new Scanner(System.in);
     private final RentalFileOperator rentalFileOperator;
-    private final CustomerService customerService;
     private final DefaultCustomerStatementConverter defaultStatementConverter;
     private final HtmlCustomerStatementConverter htmlStatementConverter;
 
     private Menu() {
         this.rentalFileOperator = RentalJsonOperator.INSTANCE;
-        this.customerService = CustomerService.INSTANCE;
         this.defaultStatementConverter = DefaultCustomerStatementConverter.INSTANCE;
         this.htmlStatementConverter = HtmlCustomerStatementConverter.INSTANCE;
     }
@@ -81,9 +78,9 @@ public class Menu {
 
     private void printInstruction() {
         System.out.println("\nTo close the program print: " + QUIT);
-        System.out.println("To get a list of movies print: " + MOVIE_LIST);
+        System.out.println("To get a list of available movies print: " + MOVIE_LIST);
         System.out.println("To add a new movie print: " + ADD_MOVIE);
-        System.out.println("To find the movie by name print: " + FIND_MOVIE);
+        System.out.println("To find a movie by some property print: " + FIND_MOVIE);
         System.out.println("To add a new customer and his rentals print: " + ADD_CUSTOMER_RENTALS);
         System.out.println("To find customer and his rentals print: " + FIND_CUSTOMER_RENTALS);
         System.out.println("Count user's amount and renter points: " + COUNT_RENTER_POINTS);
@@ -140,7 +137,6 @@ public class Menu {
             String action = "";
 
             while (!action.equalsIgnoreCase(QUIT)) {
-                Rental rental = new Rental();
                 System.out.println("Add all available movies and rental days for this customer");
                 System.out.println("Print movie title:");
 
@@ -154,8 +150,7 @@ public class Menu {
                         .findFirst();
 
                 if (m.isPresent()) {
-                    rental.setMovie(m.get());
-                    rental.setDaysRented(rentalDays);
+                    Rental rental = new Rental(m.get(), rentalDays);
                     customer.addRental(rental);
                 }
                 else {

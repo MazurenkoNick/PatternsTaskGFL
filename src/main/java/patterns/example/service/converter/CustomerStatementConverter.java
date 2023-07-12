@@ -6,5 +6,18 @@ import patterns.example.model.Customer;
 public interface CustomerStatementConverter {
 
     String getStatement(Customer customer);
-    String getStatement(AmountAndRenterPoints amountAndRenterPoints);
+
+    default String getStatement(AmountAndRenterPoints amountAndRenterPoints) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(buildHeader(amountAndRenterPoints));
+        sb.append(buildCoreInfo(amountAndRenterPoints));
+        sb.append(buildFooter(amountAndRenterPoints));
+        return sb.toString();
+    }
+
+    String buildHeader(AmountAndRenterPoints amountAndRenterPoints);
+    String buildCoreInfo(AmountAndRenterPoints amountAndRenterPoints);
+    default String buildFooter(AmountAndRenterPoints amountAndRenterPoints) { // it is possible to skip this step
+        return "";
+    }
 }

@@ -17,4 +17,3 @@
 
  In the process:
 - try to save movies without duplicates
-- try to implement `Template method` pattern in CustomerStatementConverter hierarchy

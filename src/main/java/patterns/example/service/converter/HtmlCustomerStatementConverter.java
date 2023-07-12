@@ -22,20 +22,26 @@ public class HtmlCustomerStatementConverter implements CustomerStatementConverte
     }
 
     @Override
-    public String getStatement(AmountAndRenterPoints amountsAndRenterPoints) {
-        StringBuilder sb = new StringBuilder();
+    public String buildHeader(AmountAndRenterPoints amountAndRenterPoints) {
+        return "<h1>Rental Record for " + amountAndRenterPoints.getCustomerName() + "</h1>\n" +
+                "<ul>";
+    }
 
-        sb.append("<h1>Rental Record for ").append(amountsAndRenterPoints.getCustomerName()).append("</h1>\n");
-        sb.append("<ul>");
-        for (Map.Entry<String, Double> entry : amountsAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
+    @Override
+    public String buildCoreInfo(AmountAndRenterPoints amountAndRenterPoints) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Double> entry : amountAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
             sb.append("\n\t<li>")
                     .append(entry.getKey())
                     .append(": ")
                     .append(entry.getValue())
                     .append("</li>");
         }
-        sb.append("\n</ul>");
-
         return sb.toString();
+    }
+
+    @Override
+    public String buildFooter(AmountAndRenterPoints amountAndRenterPoints) {
+        return "\n</ul>";
     }
 }

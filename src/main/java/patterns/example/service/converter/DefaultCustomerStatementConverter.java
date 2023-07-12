@@ -22,11 +22,14 @@ public class DefaultCustomerStatementConverter implements CustomerStatementConve
     }
 
     @Override
-    public String getStatement(AmountAndRenterPoints amountsAndRenterPoints) {
-        StringBuilder sb = new StringBuilder();
+    public String buildHeader(AmountAndRenterPoints amountAndRenterPoints) {
+        return "Rental Record for " + amountAndRenterPoints.getCustomerName();
+    }
 
-        sb.append("Rental Record for ").append(amountsAndRenterPoints.getCustomerName());
-        for (Map.Entry<String, Double> entry : amountsAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
+    @Override
+    public String buildCoreInfo(AmountAndRenterPoints amountAndRenterPoints) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Double> entry : amountAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
             sb.append("\n\t")
                     .append(entry.getKey())
                     .append(": ")
