@@ -15,18 +15,23 @@ public class DefaultCustomerStatementConverter implements CustomerStatementConve
         this.customerService = CustomerService.INSTANCE;
     }
 
+    @Override
     public String getStatement(Customer customer) {
         AmountAndRenterPoints amountsAndRenterPoints = customerService.countAmountsAndRenterPoints(customer);
+        return getStatement(amountsAndRenterPoints);
+    }
+
+    @Override
+    public String getStatement(AmountAndRenterPoints amountsAndRenterPoints) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Rental Record for ").append(customer.getName());
+        sb.append("Rental Record for ").append(amountsAndRenterPoints.getCustomerName());
         for (Map.Entry<String, Double> entry : amountsAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
             sb.append("\n\t")
                     .append(entry.getKey())
                     .append(": ")
                     .append(entry.getValue());
         }
-
         return sb.toString();
     }
 }

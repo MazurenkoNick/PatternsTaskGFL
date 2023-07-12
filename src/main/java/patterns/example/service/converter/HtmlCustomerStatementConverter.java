@@ -18,9 +18,14 @@ public class HtmlCustomerStatementConverter implements CustomerStatementConverte
     @Override
     public String getStatement(Customer customer) {
         AmountAndRenterPoints amountsAndRenterPoints = customerService.countAmountsAndRenterPoints(customer);
+        return getStatement(amountsAndRenterPoints);
+    }
+
+    @Override
+    public String getStatement(AmountAndRenterPoints amountsAndRenterPoints) {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("<h1>Rental Record for ").append(customer.getName()).append("</h1>\n");
+        sb.append("<h1>Rental Record for ").append(amountsAndRenterPoints.getCustomerName()).append("</h1>\n");
         sb.append("<ul>");
         for (Map.Entry<String, Double> entry : amountsAndRenterPoints.getAmountsAndRenterPoints().entrySet()) {
             sb.append("\n\t<li>")
