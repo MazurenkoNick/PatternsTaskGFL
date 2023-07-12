@@ -9,6 +9,7 @@ import patterns.example.service.customer.CustomerService;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class RentalFileOperator {
 
@@ -32,11 +33,11 @@ public abstract class RentalFileOperator {
     public void addAllMovies(List<Movie> movies) {
         boolean empty = createMovieFile();
         List<Movie> allMovies = new LinkedList<>(movies);
+
         if (!empty) {
             allMovies.addAll(readMoviesToList());
+            fileOperator.removeContentIfExist(getMovieFilePath());
         }
-
-        fileOperator.removeContentIfExist(getMovieFilePath());
         fileOperator.appendText(getMovieFilePath(), getMapper().getStringFromInstance(allMovies));
     }
 
@@ -50,8 +51,11 @@ public abstract class RentalFileOperator {
     }
 
     public List<Movie> readMoviesToList() {
+        createMovieFile();
         String result = readMoviesToString();
-        return getMapper().getInstanceFromString(result, new TypeReference<List<Movie>>() {});
+        List<Movie> list = getMapper().getInstanceFromString(result, new TypeReference<List<Movie>>() {});
+        // return empty list, if there is no list in the file
+        return Objects.requireNonNullElseGet(list, LinkedList::new);
     }
 
     public void updateUserAmountAndRenterPoints(Customer customer) {

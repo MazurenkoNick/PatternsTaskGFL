@@ -28,6 +28,9 @@ public class JsonMapper implements Mapper {
 
     @Override
     public <T> T getInstanceFromString(String json, TypeReference<T> type) {
+        if (json.isBlank()) {
+            return null;
+        }
         try {
             return objectMapper.readValue(json, type);
         } catch (IOException e) {

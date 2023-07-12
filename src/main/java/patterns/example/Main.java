@@ -7,7 +7,6 @@ import patterns.example.model.movie.Movie;
 import patterns.example.model.movie.NewReleaseType;
 import patterns.example.model.movie.RegularType;
 import patterns.example.service.converter.HtmlCustomerStatementConverter;
-import patterns.example.service.file.RentalJsonOperator;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +14,8 @@ import java.util.Set;
 public class Main {
 
     public static void main(String[] args) {
+        Menu.INSTANCE.menu();
+
         Movie m1 = Movie.builder()
                 .addMovieType(RegularType.INSTANCE)
                 .addTitle("Rambo")
@@ -50,20 +51,15 @@ public class Main {
         String statement = HtmlCustomerStatementConverter.INSTANCE.getStatement(customer);
 
         System.out.println(statement);
-
-        /// files manipulations
-        RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer);
-        RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer); // check that info will be rewritten
-        System.out.println(RentalJsonOperator.INSTANCE.readAmountAndRenterPointsToInstance(customer.getName()));
-
-        RentalJsonOperator.INSTANCE.addAllMovies(List.of(m1, m2, m3));
-        RentalJsonOperator.INSTANCE.addMovie(m1);
-        RentalJsonOperator.INSTANCE.addMovie(m2); // check that movie list will not be rewritten
-        RentalJsonOperator.INSTANCE.addMovie(m3);
-
-        List<Movie> movies = RentalJsonOperator.INSTANCE.readMoviesToList();
-        movies.forEach(System.out::println);
-
-        // todo: make menu in the console
+//
+//        /// files manipulations
+//        RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer);
+//        RentalJsonOperator.INSTANCE.updateUserAmountAndRenterPoints(customer); // check that info will be rewritten
+//        System.out.println(RentalJsonOperator.INSTANCE.readAmountAndRenterPointsToInstance(customer.getName()));
+//
+//        RentalJsonOperator.INSTANCE.addAllMovies(List.of(m1, m2, m3));
+//        RentalJsonOperator.INSTANCE.addMovie(m1);
+//        RentalJsonOperator.INSTANCE.addMovie(m2); // check that movie list will not be rewritten
+//        RentalJsonOperator.INSTANCE.addMovie(m3);
     }
 }

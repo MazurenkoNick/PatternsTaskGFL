@@ -1,61 +1,11 @@
 [ {
-  "title" : "Harry Potter",
-  "country" : "Britain",
-  "description" : "Harry Potter is a film series based on the eponymous novels by J. K. Rowling.",
-  "director" : "Chris Columbus",
-  "actors" : [ "Daniel Radcliffe", "Rupert Grint", "Emma Watson" ],
-  "minimumAge" : 18,
-  "movieType" : {
-    "type" : "Children"
-  }
-}, {
-  "title" : "Lord of the Rings",
-  "country" : "New Zealand",
-  "description" : "Based on the novel The Lord of the Rings by J. R. R. Tolkien",
-  "director" : "Peter Jackson",
-  "actors" : null,
-  "minimumAge" : 0,
+  "title" : "Title",
+  "country" : "Country",
+  "description" : "Description",
+  "director" : "Director",
+  "actors" : [ "Kim" ],
+  "minimumAge" : 16,
   "movieType" : {
     "type" : "New"
-  }
-}, {
-  "title" : "Rambo",
-  "country" : "USA",
-  "description" : "Rambo is an American media franchise centered on a series of action films featuring John J. Rambo.",
-  "director" : "Sylvester Stallone",
-  "actors" : null,
-  "minimumAge" : 0,
-  "movieType" : {
-    "type" : "Regular"
-  }
-}, {
-  "title" : "Rambo",
-  "country" : "USA",
-  "description" : "Rambo is an American media franchise centered on a series of action films featuring John J. Rambo.",
-  "director" : "Sylvester Stallone",
-  "actors" : null,
-  "minimumAge" : 0,
-  "movieType" : {
-    "type" : "Regular"
-  }
-}, {
-  "title" : "Lord of the Rings",
-  "country" : "New Zealand",
-  "description" : "Based on the novel The Lord of the Rings by J. R. R. Tolkien",
-  "director" : "Peter Jackson",
-  "actors" : null,
-  "minimumAge" : 0,
-  "movieType" : {
-    "type" : "New"
-  }
-}, {
-  "title" : "Harry Potter",
-  "country" : "Britain",
-  "description" : "Harry Potter is a film series based on the eponymous novels by J. K. Rowling.",
-  "director" : "Chris Columbus",
-  "actors" : [ "Daniel Radcliffe", "Rupert Grint", "Emma Watson" ],
-  "minimumAge" : 18,
-  "movieType" : {
-    "type" : "Children"
   }
 } ]
