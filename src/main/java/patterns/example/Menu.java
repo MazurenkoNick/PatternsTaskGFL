@@ -42,7 +42,7 @@ public class Menu {
     private final DefaultCustomerStatementConverter defaultStatementConverter;
     private final HtmlCustomerStatementConverter htmlStatementConverter;
 
-    public Menu() {
+    private Menu() {
         this.rentalFileOperator = RentalJsonOperator.INSTANCE;
         this.customerService = CustomerService.INSTANCE;
         this.defaultStatementConverter = DefaultCustomerStatementConverter.INSTANCE;

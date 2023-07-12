@@ -13,4 +13,9 @@ public class RegularType implements MovieType {
             amount += (daysRented - 2) * 1.5;
         return amount;
     }
+
+    @Override
+    public String toString() {
+        return "RegularType";
+    }
 }

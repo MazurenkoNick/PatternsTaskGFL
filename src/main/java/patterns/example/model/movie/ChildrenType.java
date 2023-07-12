@@ -14,4 +14,9 @@ public class ChildrenType implements MovieType {
             amount += (daysRented - 3) * 1.5;
         return amount;
     }
+
+    @Override
+    public String toString() {
+        return "ChildrenType";
+    }
 }

@@ -10,4 +10,9 @@ public class NewReleaseType implements MovieType {
     public double determineAmount(int daysRented) {
         return daysRented * 3;
     }
+
+    @Override
+    public String toString() {
+        return "NewReleaseType";
+    }
 }

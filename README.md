@@ -15,5 +15,5 @@
 - та ін.
 Створити зручне меню для доступу до функцій
 
-UNFINISHED (in the process):
+ In the process:
 - try to save movies without duplicates
