@@ -14,6 +14,3 @@
 - пошуку за певними характеристиками
 - та ін.
 Створити зручне меню для доступу до функцій
-
- In the process:
-- try to save movies without duplicates
